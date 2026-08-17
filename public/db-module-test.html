@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>db.module.js adapter test</title>
+  <style>
+    body { font-family: monospace; padding: 1rem; }
+    .pass { color: #1a7f37; }
+    .fail { color: #cf222e; font-weight: bold; }
+    #summary { font-weight: bold; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>db.module.js adapter test</h1>
+  <p>Not graded. Confirms the ESM adapter at src/db/db.module.js re-exports the same
+     window.db that db.js sets up, with no logic of its own. Open DevTools console for the
+     same output.</p>
+  <p><strong>Requires a local static server</strong> - the module script's relative import
+     (<code>../src/db/db.module.js</code>) will fail under a plain <code>file://</code> open in
+     Chrome. See the project notes for how to serve this file.</p>
+  <div id="output"></div>
+  <div id="summary"></div>
+
+  <script src="db.js"></script>
+  <script type="module">
+    var outputEl = document.getElementById('output');
+    var passCount = 0;
+    var failCount = 0;
+
+    function assert(label, condition, details) {
+      var line = (condition ? 'PASS' : 'FAIL') + ' - ' + label;
+      if (details !== undefined) {
+        line += ' (' + details + ')';
+      }
+      console.log(line);
+
+      var p = document.createElement('div');
+      p.className = condition ? 'pass' : 'fail';
+      p.textContent = line;
+      outputEl.appendChild(p);
+
+      if (condition) {
+        passCount++;
+      } else {
+        failCount++;
+      }
+    }
+
+    function finish() {
+      var summaryEl = document.getElementById('summary');
+      summaryEl.textContent = passCount + ' passed, ' + failCount + ' failed';
+      summaryEl.className = failCount === 0 ? 'pass' : 'fail';
+      console.log(passCount + ' passed, ' + failCount + ' failed');
+    }
+
+    async function run() {
+      assert(
+        'window.db is set (db.js loaded as a classic script) before the module import runs',
+        typeof window.db === 'object' && window.db !== null
+      );
+
+      var mod;
+      try {
+        mod = await import('../src/db/db.module.js');
+        assert('src/db/db.module.js imports without throwing', true);
+      } catch (e) {
+        assert('src/db/db.module.js imports without throwing', false, e.message);
+        finish();
+        return;
+      }
+
+      var expectedFunctions = [
+        'addCost', 'getReport', 'getReportDetailed', 'getCategoryTotals', 'getYearlyTotals',
+        'deleteCost', 'clearAll', 'getAllCosts', 'convert', 'getExchangeRates',
+        'getCachedRates', 'getRatesUrl', 'setRatesUrl'
+      ];
+      for (var i = 0; i < expectedFunctions.length; i++) {
+        var name = expectedFunctions[i];
+        assert('exports "' + name + '" as a function', typeof mod[name] === 'function');
+      }
+
+      assert(
+        'exports CURRENCIES as the same array reference as window.db.CURRENCIES',
+        Array.isArray(mod.CURRENCIES) && mod.CURRENCIES === window.db.CURRENCIES
+      );
+      assert(
+        'exports DEFAULT_RATES_URL as the same value as window.db.DEFAULT_RATES_URL',
+        typeof mod.DEFAULT_RATES_URL === 'string' && mod.DEFAULT_RATES_URL === window.db.DEFAULT_RATES_URL
+      );
+
+      // dedicated store so this test doesn't collide with data left behind by
+      // db-test.html / db-manual-test.html on the same origin
+      window.db.openCostsDB('moduletestdb', 1);
+      mod.clearAll();
+
+      var result1 = mod.addCost({ sum: 200, currency: 'USD', category: 'FOOD', description: 'pizza' });
+      var result2 = mod.addCost({ sum: 400, currency: 'USD', category: 'CAR', description: 'fuel' });
+      assert('addCost via the module import succeeds (1st item)', !!result1);
+      assert('addCost via the module import succeeds (2nd item)', !!result2);
+
+      var reportViaModule = mod.getReport('USD');
+      var reportViaWindowDb = window.db.getReport('USD');
+      assert(
+        'getReport via the module import returns total 600, same as db-test.html\'s scenario',
+        reportViaModule.total.sum === 600,
+        'got ' + reportViaModule.total.sum
+      );
+      assert(
+        'getReport via the module import matches window.db.getReport exactly (same underlying db.js)',
+        JSON.stringify(reportViaModule) === JSON.stringify(reportViaWindowDb),
+        JSON.stringify(reportViaModule) + ' vs ' + JSON.stringify(reportViaWindowDb)
+      );
+
+      finish();
+    }
+
+    run();
+  </script>
+</body>
+</html>
