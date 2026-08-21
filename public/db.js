@@ -12,10 +12,8 @@
 
   var CURRENCIES = ['USD', 'ILS', 'GBP', 'EURO'];
 
-  // TODO_SET_AFTER_DEPLOY: replace with the real deployed URL of
-  // public/rates.json (e.g. "https://<app>.onrender.com/rates.json") once
-  // the app is live. Left unset on purpose - see planning/db-architecture.md §4.
-  var DEFAULT_RATES_URL = 'TODO_SET_AFTER_DEPLOY';
+  // Deployed rates.json - see planning/db-architecture.md §4.
+  var DEFAULT_RATES_URL = 'https://cost-manager-frontend-project.onrender.com/rates.json';
 
   // Bottom of the rates cache chain - always available, no network needed.
   var FALLBACK_RATES = { USD: 1, GBP: 0.6, EURO: 0.7, ILS: 3.4 };
