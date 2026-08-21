@@ -273,7 +273,7 @@ All rates are relative to 1 USD (3.4 ILS = 1 USD).
 ### Default URL
 
 `DEFAULT_RATES_URL` is an **absolute** deployed URL —
-`https://<app>.onrender.com/rates.json` — filled in once after the first deploy. It must not be
+`https://cost-manager-frontend-project.onrender.com/rates.json` — filled in once after the first deploy. It must not be
 a relative path: the standalone `db.js` is graded outside the app's origin, where `/rates.json`
 would 404.
 
