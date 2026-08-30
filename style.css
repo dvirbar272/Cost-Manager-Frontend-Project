@@ -1,0 +1,189 @@
+/*
+  style.css
+  Main stylesheet for the Cost Manager application.
+  Defines the visual layout, typography, UI components (cards, forms, tables),
+  and styling for empty states and responsive design.
+*/
+
+/* Reset basic margins and define global fonts */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f8fafc;
+    color: #111827;
+    margin: 0;
+}
+
+/* Style the top application header area */
+header {
+    background-color: #111827;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Define the main dashboard container width and alignment */
+.dashboard {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Style the individual white cards that contains each feature */
+.card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #f1f5f9;
+}
+
+/* Style h2 headings inside the cards */
+h2 {
+    color: #111827;
+    margin-top: 0;
+    border-bottom: 2px solid #111827;
+    display: inline-block;
+}
+
+/* Style h3 headings for chart titles */
+h3 {
+    color: #111827;
+    text-align: center;
+}
+
+/* Layout for forms using flexbox for responsive wrapping */
+form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    align-items: flex-end;
+}
+
+/* Basic styling for text inputs and dropdowns */
+input, select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    min-width: 150px;
+    flex: 1;
+}
+
+/* Apply focus style for text inputs and dropdowns */
+input:focus, select:focus {
+    border-color: #111827;
+}
+
+/* Base style for action buttons */
+button {
+    background-color: #111827;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 150px;
+    flex: 1;
+}
+
+/* Hover state effect for buttons */
+button:hover {
+    background-color: #374151;
+}
+
+/* Style the report data table */
+table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
+}
+
+/* Add padding and borders to table cells */
+td, th {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Style table headers for distinction */
+th {
+    color: #4e5a6c;
+    font-weight: 600;
+}
+
+/* Style the total sum text at the bottom of the report */
+.total-sum {
+    color: #27ae60;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 15px;
+}
+
+/* Global paragraph text color and size */
+p {
+    font-size: 14px;
+    color: #4e5a6c;
+}
+
+/* Container for settings inputs aligning items at the bottom */
+.settings-box {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+/* Style individual chart containers */
+.chart-box {
+    flex: 1;
+    min-width: 300px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+/* Wrapper to maintain canvas for chart aspect ratio and sizing */
+.canvas-wrapper {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+/* Row layout for displaying two charts side-by-side */
+.charts-row {
+    display: flex;
+    gap: 20px;
+}
+
+/* Styling for the empty state message in the table */
+.no-costs-message {
+    color: #64748b;
+    text-align: center;
+
+}
+
+/* Styling for the empty state message inside charts */
+.empty-chart-message {
+    text-align: center;
+    color: #64748b;
+    line-height: 300px;
+}
+
+/* Box for wrapping a label and an input together vertically */
+.input-label-box {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+/* Style the labels above inputs */
+label {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 4px;
+    margin-left: 10px;
+}

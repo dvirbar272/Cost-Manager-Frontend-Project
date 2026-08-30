@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Sets metadata and links the main stylesheet for layout and UI components -->
+<head>
+    <meta charset="UTF-8">
+    <title>Cost Manager</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <!-- The header tag visually anchors the top of the application layout -->
+    <header>
+        <h1>Cost Manager</h1>
+    </header>
+    <!-- Central dashboard for all the app's features -->
+    <div class="dashboard">
+        <!-- Card for adding a new cost item -->
+        <div class="card">
+            <h2>Add Cost Item</h2>
+
+            <!-- The form element groups the input fields for a new cost record -->
+            <form id="addCostForm">
+                <div class="input-label-box">
+                    <label for="sum">Sum</label>
+                    <!-- Attributes min="0" and step="0.01" enforce native browser validation for positive decimal amounts -->
+                    <input type="number" id="sum" placeholder="Sum" required min="0" step="0.01">
+                </div>
+
+                <div class="input-label-box">
+                    <label for="currency">Currency</label>
+                    <!-- The select element restricts the currency choice to predefined static supported currencies options -->
+                    <select id="currency" required>
+                        <option value="USD">USD</option>
+                        <option value="ILS">ILS</option>
+                        <option value="GBP">GBP</option>
+                        <option value="EURO">EURO</option>
+                    </select>
+                </div>
+
+                <div class="input-label-box">
+                    <label for="category">Category</label>
+                    <!-- Text input enforcing a mandatory category string for each cost -->
+                    <input type="text" id="category" placeholder="Category" required>
+                </div>
+
+                <div class="input-label-box">
+                    <label for="description">Description</label>
+                    <!-- Text input enforcing a mandatory description string for each cost -->
+                    <input type="text" id="description" placeholder="Description" required>
+                </div>
+
+                <!-- Submit button that triggers the browser's form validation -->
+                <button type="submit">Add Cost</button>
+            </form>
+        </div>
+
+        <!-- Card dedicated to the presentation of report data and visualizations -->
+        <div class="card">
+            <h2>Report & Charts</h2>
+
+            <!-- A form element grouping the filtering controls used to query the data -->
+            <form id="reportForm">
+                <div class="input-label-box">
+                    <label for="filterYear">Year</label>
+                    <!-- Numeric input field dedicated to capturing the year parameter -->
+                    <input type="number" id="filterYear" placeholder="Year" required>
+                </div>
+
+                <div class="input-label-box">
+                    <label for="filterMonth">Month</label>
+                    <!-- Dropdown menu providing the 12 calendar months as selectable values -->
+                    <select id="filterMonth" required>
+                        <option value="1">Jan</option>
+                        <option value="2">Feb</option>
+                        <option value="3">Mar</option>
+                        <option value="4">Apr</option>
+                        <option value="5">May</option>
+                        <option value="6">Jun</option>
+                        <option value="7">Jul</option>
+                        <option value="8">Aug</option>
+                        <option value="9">Sep</option>
+                        <option value="10">Oct</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Dec</option>
+                    </select>
+                </div>
+
+                <div class="input-label-box">
+                    <label for="filterCurrency">Currency</label>
+                    <!-- Dropdown menu specifying the target currency dimension for the generated report -->
+                    <select id="filterCurrency" required>
+                        <option value="USD">USD</option>
+                        <option value="ILS">ILS</option>
+                        <option value="GBP">GBP</option>
+                        <option value="EURO">EURO</option>
+                    </select>
+                </div>
+            </form>
+
+            <div class="report-table">
+                <!-- Table structure providing static column headers for the report data -->
+                <table id="reportTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Original Cost</th>
+                        </tr>
+                    </thead>
+                    <!-- The empty tbody element serves as a structural placeholder for dynamic rows -->
+                    <tbody></tbody>
+                </table>
+                <!-- Paragraph element reserved for displaying the calculated total sum text -->
+                <p id="totalReportSum" class="total-sum"></p>
+            </div>
+
+            <!-- Container designed to align charts side-by-side -->
+            <div class="charts-row">
+
+                <!-- Pie Chart Section -->
+                <div class="chart-box">
+                    <h3>Monthly Cost by Category</h3>
+                    <div class="canvas-wrapper">
+                        <!-- Hidden text element acting as a structural fallback message for empty data states -->
+                        <p id="pieChartEmptyMsg" class="empty-chart-message" style="display: none;">No costs found for this month</p>
+                        <!-- Canvas element providing a designated drawing surface for graphical visualization (Pie Chart) -->
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bar Chart Section -->
+                <div class="chart-box">
+                    <h3>Yearly Costs by Month</h3>
+                    <div class="canvas-wrapper">
+                        <!-- Canvas element providing a designated drawing surface for graphical visualization (Bar Chart) -->
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card dedicated for inputting configuration settings -->
+        <div class="card">
+            <h2>Settings</h2>
+            <div class="settings-box">
+                <div class="input-label-box">
+                    <label for="ratesUrl">Enter Exchange Rates URL:</label>
+                    <!-- The type="url" attribute enforces browser-level format validation for external links -->
+                    <input type="url" id="ratesUrl">
+                </div>
+
+                <!-- Button element dedicated to submitting the custom settings configuration -->
+                <button id="saveSettings">Save Settings</button>
+            </div>
+            <!-- Text element providing user instructions to return to the default url -->
+            <p>Leave empty and save to use default URL rates</p>
+        </div>
+    </div>
+
+    <!-- External script references placed at the very end of the body to prevent HTML render-blocking -->
+    <script src="db.js"></script>
+    <script src="app.js"></script>
+    <!-- Script tag importing a required resource for the charts rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
