@@ -49,7 +49,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isFetchingRates = false;
 
     // Perform the initial rates fetch before setting up the dashboard
-    await fetchRates();
+    try{
+        await fetchRates();
+    }
+    catch(error){
+        // Alert the user that initial fetch failed
+        alert(`Initial fetch failed: ${error.message}, Relying on cached rates`);
+    }
+
     setupEventListeners(appState);
     updateDashboard(appState);
 
@@ -60,10 +67,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         isFetchingRates = true;
 
-        // Fetch rates and update dashboard
-        await fetchRates();
-        updateDashboard(appState);
-        console.log('Rates updated automatically');
+        // Fetch rates and update dashboard only if the fetching was successful to avoid redundant re-rendering
+        try{
+            await fetchRates();
+            updateDashboard(appState);
+            console.log('Rates updated automatically');
+        }
+        catch(error){
+            // Print an error to the console, we're not using here alert to prevent disrupting the user's experience during automatic background update
+            console.error(`Background fetch failed: ${error.message}, relying on cached rates`);
+        }
         isFetchingRates = false;
 
     }, ratesFetchInterval);
@@ -71,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /*
-  Fetches exchange rates from the configured URL or default fallback.
+  Fetches exchange rates from the configured URL or default URL.
   Returns a Promise that resolves when the fetch is complete.
 */
 async function fetchRates(){
@@ -83,24 +96,18 @@ async function fetchRates(){
         fetchUrl = ratesDefaultUrl;
     }
 
-    try {
-        // Await the response from the fetch call
-        const response = await fetch(fetchUrl);
+    // Await the response from the fetch call
+    const response = await fetch(fetchUrl);
 
-        // Only update rates if the response from the server is successful
-        if(response.ok){
-            const rates = await response.json();
-            db.setExchangeRates(rates);
-            console.log('Rates loaded successfully from server');
-        }
-        else{
-            // Log an error if the server response was not ok code
-            console.error('Server responded with an error, relying on cached rates');
-        }
+    // Only update rates if the response from the server is successful
+    if(response.ok){
+        const rates = await response.json();
+        db.setExchangeRates(rates);
+        console.log('Rates loaded successfully from server');
     }
-    catch(error){
-        // Log an error if the fetch failed entirely
-        console.error('Failed to fetch rates, relying on cached rates');
+    else{
+        // Throw an error if the server response is not ok, to be handled by the function caller
+        throw new Error('Invalid URL or Server Error');
     }
 }
 
@@ -186,8 +193,8 @@ async function handleSaveSettings(appState){
 
     }
     catch(error){
-        // Log an error if saving the URL or fetching the new rates fails
-        alert(`Invalid settings: ${error.message}`);
+        // Alert the user if fetching from the new URL fails
+        alert(`Failed to fetch rates: ${error.message}, Relying on cached rates`);
     }
 }
 
