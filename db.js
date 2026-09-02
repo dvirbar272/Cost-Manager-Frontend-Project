@@ -349,65 +349,65 @@
 
     // Expose the database methods to the global window object
     window.db = {
-        openCostsDB: openCostsDB
-    };
-
-    /*
-      Saves a custom URL for fetching exchange rates into LocalStorage.
-      Returns nothing.
-    */
-    window.db.setRatesUrl = function(url){
-        // Ensure url string is valid and not empty
-        if (typeof url === 'string' && url.trim() !== ''){
-            // Save the URL to local storage
-            localStorage.setItem(urlStorageName, url);
-        }
-        else{
-            // Throw error for invalid input
-            throw new Error('URL must be a non-empty string');
-        }
-    }
-
-    /*
-      Retrieves the custom URL for exchange rates from LocalStorage.
-      Returns the saved URL as a string, or null if it doesn't exist.
-    */
-    window.db.getRatesUrl = function () {
-        return localStorage.getItem(urlStorageName);
-    };
-
-    /*
-      Updates the internal exchange rates object based on the fetched data.
-      Returns nothing.
-    */
-    window.db.setExchangeRates = function(rates){
-        // Validate incoming rates object
-        if (!rates || typeof rates !== "object") {
-            // Throw error for invalid object
-            throw new Error('Rates must be a valid object');
-        }
+        openCostsDB: openCostsDB,
 
         /*
-          We intentionally avoid throwing an error if a specific currency is missing or invalid in the fetched data.
-          This design choice ensures fault tolerance and allows partial updates.
-          valid rates from the server are successfully applied, while missing ones
-          safely retain their previous or hardcoded fallback values without crashing the application.
+          Saves a custom URL for fetching exchange rates into LocalStorage.
+          Returns nothing.
         */
-        currenciesSupported.forEach(function (currency) {
-            // Check if currency exists in object and is a valid number
-            if (typeof rates[currency] === "number" && rates[currency] > 0) {
-                currentRates[currency] = rates[currency];
+        setRatesUrl: function(url){
+            // Ensure url string is valid and not empty
+            if (typeof url === 'string' && url.trim() !== ''){
+                // Save the URL to local storage
+                localStorage.setItem(urlStorageName, url);
             }
-        });
-    };
+            else{
+                // Throw error for invalid input
+                throw new Error('URL must be a non-empty string');
+            }
+        },
 
-    /*
-      Provides access to the currently loaded exchange rates.
-      Returns a copy of the current exchange rates object.
-    */
-    window.db.getExchangeRates = function () {
-        // Return cloned object to prevent unintended mutations
-        return { ...currentRates };
-    };
+        /*
+          Retrieves the custom URL for exchange rates from LocalStorage.
+          Returns the saved URL as a string, or null if it doesn't exist.
+        */
+        getRatesUrl: function () {
+            return localStorage.getItem(urlStorageName);
+        },
 
+        /*
+          Updates the internal exchange rates object based on the fetched data.
+          Returns nothing.
+        */
+        setExchangeRates: function(rates){
+            // Validate incoming rates object
+            if (!rates || typeof rates !== "object") {
+                // Throw error for invalid object
+                throw new Error('Rates must be a valid object');
+            }
+
+            /*
+              We intentionally avoid throwing an error if a specific currency is missing or invalid in the fetched data.
+              This design choice ensures fault tolerance and allows partial updates.
+              valid rates from the server are successfully applied, while missing ones
+              safely retain their previous or hardcoded fallback values without crashing the application.
+            */
+            currenciesSupported.forEach(function (currency) {
+                // Check if currency exists in object and is a valid number
+                if (typeof rates[currency] === "number" && rates[currency] > 0) {
+                    currentRates[currency] = rates[currency];
+                }
+            });
+        },
+
+        /*
+          Provides access to the currently loaded exchange rates.
+          Returns a copy of the current exchange rates object.
+        */
+        getExchangeRates: function () {
+            // Return cloned object to prevent unintended mutations
+            return { ...currentRates };
+        }
+
+    };
 })();
