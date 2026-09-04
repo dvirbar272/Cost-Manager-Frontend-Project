@@ -398,16 +398,6 @@
                     currentRates[currency] = rates[currency];
                 }
             });
-        },
-
-        /*
-          Provides access to the currently loaded exchange rates.
-          Returns a copy of the current exchange rates object.
-        */
-        getExchangeRates: function () {
-            // Return cloned object to prevent unintended mutations
-            return { ...currentRates };
         }
-
     };
 })();
