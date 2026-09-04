@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Pre-fill the filter form with the current year and month
     const nowDate = new Date();
-    document.getElementById('filterYear').value = nowDate.getFullYear();
-    document.getElementById('filterMonth').value = nowDate.getMonth() + 1;
+    document.getElementById('filterYear').value = String(nowDate.getFullYear());
+    document.getElementById('filterMonth').value = String(nowDate.getMonth() + 1);
 
     // Load any previously saved custom URL into the settings input
     const savedUrl = db.getRatesUrl();
