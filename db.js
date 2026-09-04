@@ -19,10 +19,10 @@
     // These initial values serve exclusively as a safety net if all network fetch attempts fail.
     // Once a network request succeeds, setExchangeRates dynamically overwrites these values.
     const currentRates = {
-        "USD": 1,
-        "GBP": 0.6,
-        "EURO": 0.7,
-        "ILS": 3.4
+        USD: 1,
+        GBP: 0.6,
+        EURO: 0.7,
+        ILS: 3.4
     };
 
     /*
@@ -342,7 +342,7 @@
 
                 return chartCategories;
             }
-        }
+        };
     }
 
     // Expose the database methods to the global window object
