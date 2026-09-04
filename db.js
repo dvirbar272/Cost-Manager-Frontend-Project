@@ -14,12 +14,10 @@
     // LocalStorage key for saving the rates URL
     const urlStorageName = 'exchangeRatesUrl';
 
-    /*
-      This object holds the active exchange rates, starting with hardcoded backups.
-      The application still prioritizes fetching rates from the required default URL or the user custom one.
-      These initial values serve exclusively as a safety net if all network fetch attempts fail.
-      Once a network request succeeds, setExchangeRates dynamically overwrites these values.
-    */
+    // This object holds the active exchange rates, starting with hardcoded backups.
+    // The application still prioritizes fetching rates from the required default URL or the user custom one.
+    // These initial values serve exclusively as a safety net if all network fetch attempts fail.
+    // Once a network request succeeds, setExchangeRates dynamically overwrites these values.
     const currentRates = {
         "USD": 1,
         "GBP": 0.6,
