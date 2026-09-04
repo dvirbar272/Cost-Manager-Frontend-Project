@@ -20,7 +20,7 @@
       These initial values serve exclusively as a safety net if all network fetch attempts fail.
       Once a network request succeeds, setExchangeRates dynamically overwrites these values.
     */
-    let currentRates = {
+    const currentRates = {
         "USD": 1,
         "GBP": 0.6,
         "EURO": 0.7,
@@ -47,8 +47,8 @@
         }
 
         // Normalize the amount to a base currency (USD) first, and then convert it to the target currency
-        const sumInUSD = sum / currentRates[originalCurrency];
-        return sumInUSD * currentRates[targetCurrency];
+        const sumInBaseCurrency = sum / currentRates[originalCurrency];
+        return sumInBaseCurrency * currentRates[targetCurrency];
     }
 
     /*
@@ -132,7 +132,7 @@
         catch(error){
             // Handle blocked storage access or other errors without breaking the app
             // Silent recovery: log the error and return [] so the dashboard safely renders
-            console.error('Storage error: ' + error.message);
+            console.error(`Storage error: ${error.message}`);
             return [];
         }
     }
@@ -381,7 +381,7 @@
         */
         setExchangeRates: function(rates){
             // Validate incoming rates object
-            if (!rates || typeof rates !== "object") {
+            if (!rates || typeof rates !== 'object') {
                 // Throw error for invalid object
                 throw new Error('Rates must be a valid object');
             }
@@ -392,9 +392,9 @@
               valid rates from the server are successfully applied, while missing ones
               safely retain their previous or hardcoded fallback values without crashing the application.
             */
-            currenciesSupported.forEach(function (currency) {
+            currenciesSupported.forEach(currency => {
                 // Check if currency exists in object and is a valid number
-                if (typeof rates[currency] === "number" && rates[currency] > 0) {
+                if (typeof rates[currency] === 'number' && rates[currency] > 0) {
                     currentRates[currency] = rates[currency];
                 }
             });
