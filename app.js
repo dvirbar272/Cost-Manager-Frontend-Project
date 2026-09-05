@@ -76,7 +76,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log('Rates updated automatically');
         }
         catch(error){
-            // Print an error to the console, we're not using here alert to prevent disrupting the user's experience during automatic background update
+            // Print an error to the console
+            // We're not using here alert to prevent disrupting the user's experience during automatic background update
             console.error(`Background fetch failed: ${error.message}, relying on cached rates`);
         }
         isFetchingRates = false;
