@@ -172,7 +172,7 @@
 
         // Validate that the database version is a valid number type
         if(typeof databaseVersion !== 'number'){
-            throw new Error('DB version must be a positive number');
+            throw new Error('DB version must be a number');
         }
 
         // Initialize with an empty array if the database is newly created
@@ -216,7 +216,8 @@
             },
 
             /*
-              Generates a monthly report with costs converted to the requested currency.
+              Generates a monthly report where the total sum converted to the requested currency,
+              while individual costs retain their original currency.
               Returns an object containing year, month, formatted costs array, and total sum.
             */
             getReport: function (currency, year, month){
@@ -340,6 +341,7 @@
                     }
                 });
 
+                // Return the populated category totals
                 return chartCategories;
             }
         };
@@ -370,6 +372,7 @@
           Returns the saved URL as a string, or null if it doesn't exist.
         */
         getRatesUrl: function () {
+            // Get the stored URL string from the local storage and immediately return it
             return localStorage.getItem(urlStorageName);
         },
 
