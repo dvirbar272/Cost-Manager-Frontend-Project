@@ -5,15 +5,17 @@
   and renders dynamic data into tables and Chart.js components.
 */
 
-// Set up global constants for database and charts
+// Set up constants for the app
 const dbName = 'costsdb';
 const defaultCurrency = 'USD';
-const chartColors = ['#1e40af', '#3b82f6', '#9ca3af', '#111827', '#06b6d4', '#4b5563', '#93c5fd'];
-const monthsNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const ratesFetchInterval = 1000 * 60 * 60;
 const ratesDefaultUrl = 'https://cost-manager-8vp7.onrender.com/rates.json';
 
-// Initialize the application and UI state when the DOM is ready
+/*
+  Function triggered by the 'DOMContentLoaded' event listener.
+  Initialize the application and UI state when the DOM is ready.
+  Sets up the database connection, initial state, and begins data fetching.
+*/
 document.addEventListener('DOMContentLoaded', async () => {
 
     // Define the database variable
@@ -284,6 +286,9 @@ function renderReport(report){
   Returns nothing.
 */
 function renderPieChart(monthByCategory, appState){
+    // Define a list of colors for the pie chart
+    const chartColors = ['#1e40af', '#3b82f6', '#9ca3af', '#111827', '#06b6d4', '#4b5563', '#93c5fd'];
+
     // Get references to DOM elements
     const emptyMsg = document.getElementById('pieChartEmptyMsg');
     const canvas = document.getElementById('pieChart');
@@ -330,6 +335,10 @@ function renderPieChart(monthByCategory, appState){
   Returns nothing.
 */
 function renderBarChart(monthlyTotals, currency, appState){
+    // Define the month names and the main chart color
+    const monthsNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const chartColor = '#1e40af';
+
     // Get the canvas context for the bar chart
     const barChartContext = document.getElementById('barChart').getContext('2d');
 
@@ -349,7 +358,7 @@ function renderBarChart(monthlyTotals, currency, appState){
                // Provide the 12 monthly totals data
                data: monthlyTotals,
                // Apply primary color to bars
-               backgroundColor: chartColors[0]
+               backgroundColor: chartColor
            }]
         },
         options: {maintainAspectRatio: false}
