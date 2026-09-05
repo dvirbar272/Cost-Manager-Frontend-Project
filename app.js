@@ -171,7 +171,7 @@ function resetCostForm(){
 
 /*
   Saves user-defined URL settings and re-fetches the exchange rates.
-  Returns nothing.
+  Returns a Promise.
 */
 async function handleSaveSettings(appState){
     // Get the trimmed URL from the input
@@ -190,7 +190,6 @@ async function handleSaveSettings(appState){
         await fetchRates();
         updateDashboard(appState);
         alert('Settings saved and Rates updated!');
-
     }
     catch(error){
         // Alert the user if fetching from the new URL fails
